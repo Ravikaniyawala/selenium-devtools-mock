@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="SuiteListID">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="SERVICES"/>
+        <xs:enumeration value="USER_INTERFACE"/>
+        <xs:enumeration value="UTILITIES"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="Email" type="xs:string"/>
+  <xs:element name="ccEmail" type="xs:string"/>
+  <xs:element name="Recipients">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Email"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="subject">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="Test Automation Generated Alert - FAILURE."/>
+        <xs:enumeration value="Test Automation Generated Alert - PASSED."/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="PassedTests">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="subject"/>
+        <xs:element ref="message"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="userName" type="xs:string"/>
+  <xs:element name="message">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="This email is being sent to notify you that Automated Tests below have failed. Please review the report attached."/>
+        <xs:enumeration value="This email is being sent to notify you that Automated Tests run have PASSED. Please review the report attached."/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="AlertsInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Sender"/>
+        <xs:element ref="AlertContent"/>
+        <xs:element ref="Recipients"/>
+        <xs:element ref="Alert" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Sender">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="userName"/>
+        <xs:element ref="password"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="password" type="xs:string"/>
+  <xs:element name="FailedTests">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="subject"/>
+        <xs:element ref="message"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Alert">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="SuiteListID"/>
+        <xs:element ref="recipientEmail"/>
+        <xs:element ref="ccEmail"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AlertContent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="FailedTests"/>
+        <xs:element ref="PassedTests"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="recipientEmail" type="xs:string"/>
+</xs:schema>

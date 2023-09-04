@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<Configuration>
+
+    <!--Documentation Options-->
+    <DocumentationOptions>
+        <DocumentationOption>ALL</DocumentationOption>
+        <DocumentationOption>INFO</DocumentationOption>
+    </DocumentationOptions>
+
+    <!--Documentation can have the following ALL OR INFO-->
+    <Documentation>ALL</Documentation>
+
+    <!--Action Options-->
+    <ActionOptions>
+        <ActionOption>TEST</ActionOption>
+        <ActionOption>DOCUMENT</ActionOption>
+    </ActionOptions>
+
+    <!--Action can have the following DOCUMENT, TEST-->
+    <Action>TEST</Action>
+
+    <!--The CSV String must start with one of these command prefixes-->
+    <CommandPrefixes>
+        <Prefix>SCENARIOS:</Prefix>
+        <Prefix>FEATURES:</Prefix>
+        <Prefix>CATEGORIES:</Prefix>
+        <Prefix>FAILED SCENARIOS</Prefix>
+        <Prefix>UTILITIES:</Prefix>
+        <Prefix>DEMO</Prefix>
+        <Prefix>STATUS REPORT</Prefix>
+    </CommandPrefixes>
+
+
+
+    <!--The available environments-->
+    <Environments>
+        <Environment>INT</Environment>
+        <Environment>QA</Environment>
+        <Environment>PRE-PROD</Environment>
+        <Environment>PROD</Environment>
+    </Environments>
+
+    <!--Environment that the feature must run against-->
+    <RunAgainst>
+        <Environment>QA</Environment>
+    </RunAgainst>
+
+    <!--Alerts Flag-->
+    <EnableAlerts>true</EnableAlerts>
+
+    <!--The available Browsers the feature can run on-->
+    <AvailableBrowsers>
+        <AvailableBrowser>CHROME</AvailableBrowser>
+        <AvailableBrowser>FIRE_FOX</AvailableBrowser>
+        <AvailableBrowser>SAUCE_CHROME</AvailableBrowser>
+    </AvailableBrowsers>
+
+    <!--Browser To be used for Testing-->
+    <Browser>FIRE_FOX</Browser>
+
+    <!--Parallel Execution of Tests-->
+    <ParallelExecution>
+        <Parallel>true</Parallel>
+        <ThreadCount>10</ThreadCount>
+    </ParallelExecution>
+
+</Configuration>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<AlertsInfo>
+    <Sender>
+        <userName>ravi.kaniyawala@foodstuffs.co.nz</userName>
+        <password>Pra</password>
+    </Sender>
+    <AlertContent>
+        <FailedTests>
+            <subject>Test Automation Generated Alert - FAILURE.</subject>
+            <message>This email is being sent to notify you that Automated Tests below have failed. Please review the report attached.</message>
+        </FailedTests>
+
+        <PassedTests>
+            <subject>Test Automation Generated Alert - PASSED.</subject>
+            <message>This email is being sent to notify you that Automated Tests run have PASSED. Please review the report attached.</message>
+        </PassedTests>
+    </AlertContent>
+    <Recipients>
+        <Email>ravi.kaniyawala@foodstuffs.co.nz</Email>
+    </Recipients>
+    <Alert>
+        <SuiteListID>SERVICES</SuiteListID>
+        <recipientEmail>ravi.kaniyawala@foodstuffs.co.nz</recipientEmail>
+        <ccEmail>ravi.kaniyawala@foodstuffs.co.nz</ccEmail>
+    </Alert>
+    <Alert>
+        <SuiteListID>USER_INTERFACE</SuiteListID>
+        <recipientEmail>ravi.kaniyawala@foodstuffs.co.nz</recipientEmail>
+        <ccEmail>ravi.kaniyawala@foodstuffs.co.nz</ccEmail>
+    </Alert>
+    <Alert>
+        <SuiteListID>UTILITIES</SuiteListID>
+        <recipientEmail>ravi.kaniyawala@foodstuffs.co.nz</recipientEmail>
+        <ccEmail>ravi.kaniyawala@foodstuffs.co.nz</ccEmail>
+    </Alert>
+</AlertsInfo>
