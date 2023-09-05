@@ -5,14 +5,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.NetworkInterceptor;
-import org.openqa.selenium.devtools.v108.browser.Browser;
-import org.openqa.selenium.devtools.v108.browser.model.PermissionType;
-import org.openqa.selenium.devtools.v108.cachestorage.model.Header;
-import org.openqa.selenium.devtools.v108.emulation.Emulation;
-import org.openqa.selenium.devtools.v108.fetch.Fetch;
+import org.openqa.selenium.devtools.v116.browser.Browser;
+import org.openqa.selenium.devtools.v116.browser.model.PermissionType;
+import org.openqa.selenium.devtools.v116.cachestorage.model.Header;
+import org.openqa.selenium.devtools.v116.emulation.Emulation;
+import org.openqa.selenium.devtools.v116.fetch.Fetch;
 
-import org.openqa.selenium.devtools.v108.network.Network;
-import org.openqa.selenium.devtools.v108.network.model.Request;
+import org.openqa.selenium.devtools.v116.network.Network;
+import org.openqa.selenium.devtools.v116.network.model.Request;
 
 import org.openqa.selenium.remote.http.HttpResponse;
 import org.openqa.selenium.remote.http.Route;
@@ -22,7 +22,6 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static org.openqa.selenium.remote.http.Contents.utf8String;
@@ -97,49 +96,52 @@ public class MockService{
     public void enableNetworkLogs(WebDriver webDriver) {
         requestDetails.clear();
         DevTools dt = devTools.get();
-        AtomicBoolean redirected = new AtomicBoolean(false);  // Step 1
 
-        dt.addListener(Network.requestWillBeSent(),
-                request -> {
-                    synchronized (requestDetails) {
-                        Request actualRequest = request.getRequest();
-                        String actualUrl = actualRequest.getUrl();
+        dt.addListener(Network.requestWillBeSent(), request -> {
+            Request actualRequest = request.getRequest();
+            String actualUrl = actualRequest.getUrl();
+            String actualMethod = actualRequest.getMethod();
+            String requestId = request.getRequestId().toJson();
+            String body = actualRequest.getPostData().toString();
+            String headers = actualRequest.getHeaders().toString();
 
-                        String actualMethod = actualRequest.getMethod();
-                        String requestId = request.getRequestId().toJson();
-                        String body = request.getRequest().getPostData().toString();
-                        String headers = request.getRequest().getHeaders().toString();
+            Map<String, String> details = new HashMap<>();
+            details.put("URL", actualUrl);
+            details.put("Method", actualMethod);
+            details.put("requestId", requestId);
+            details.put("Body", body);
+            details.put("headers", headers);
 
-                        Map<String, String> details = new HashMap<>();
-                        details.put("URL", actualUrl);
-                        details.put("Method", actualMethod);
-                        details.put("requestId", requestId);
-                        details.put("Body", body);
-                        details.put("headers", headers);
-                        requestDetails.add(details);
-                    }
-                });
+            synchronized (requestDetails) {
+                requestDetails.add(details);
+            }
+        });
 
-        dt.addListener(Network.responseReceived(),
-                responseReceived -> {
-
-                    synchronized (requestDetails) {
-                        Iterator<Map<String, String>> iterator = requestDetails.iterator();
-                        while (iterator.hasNext()) {
-                            Map<String, String> details = iterator.next();
-                            try {
-                                if (details.get("requestId").contains(responseReceived.getRequestId().toJson())) {
-                                    details.put("StatusCode", responseReceived.getResponse().getStatus().toString());
-                                }
-                            } catch (NullPointerException n) {
-                                // handle exception
-                            }
+        dt.addListener(Network.responseReceived(), responseReceived -> {
+            synchronized (requestDetails) {
+                for (Map<String, String> details : requestDetails) {
+                    try {
+                        if (details.get("requestId").contains(responseReceived.getRequestId().toJson())) {
+                            details.put("StatusCode", responseReceived.getResponse().getStatus().toString());
                         }
+                    } catch (NullPointerException ignored) {
                     }
+                }
+            }
+        });
 
-                });
-        dt.addListener(Fetch.requestPaused(), requestPaused -> Fetch.continueRequest(requestPaused.getRequestId(),Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty(),Optional.of(false)));
+        dt.addListener(Fetch.requestPaused(), requestPaused -> {
+            Fetch.continueRequest(
+                    requestPaused.getRequestId(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.of(false)
+            );
+        });
     }
+
 
 
     public void reset_GeoLocation() {
@@ -147,11 +149,6 @@ public class MockService{
     }
 
     public void set_GeoLocation(WebDriver webDriver, String lat, String lon){
-        // Cast WebDriver to HasDevTools
-        /*HasDevTools hasDevTools = (HasDevTools) webDriver;
-
-        DevTools devTools = hasDevTools.getDevTools();*/
-        //devTools.createSession();
 
         Map<String, Object> coordinates = Map.of(
                 "latitude", Float.parseFloat(lat),
@@ -190,8 +187,8 @@ public class MockService{
                 Map<String, String> details = iterator.next();
                 if(details.get("URL").contains("gtmsspns")){
 
-                    String urlString = details.get("URL"); // your URL here
-                    String[] urlParts = urlString.split("\\?"); // split the base URL and parameters
+                    //String urlString = details.get("URL"); // your URL here
+                    String[] urlParts = details.get("URL").split("\\?"); // split the base URL and parameters
                     if (urlParts.length > 1) {
                         String query = urlParts[1];
                         String[] params = query.split("&"); // split the parameters
@@ -211,10 +208,7 @@ public class MockService{
                         }
                     }
                 }
-
-
             }
-
         }
     }
 

@@ -44,7 +44,7 @@ public class Navigation extends AbstractTest{
         document.RISK(Attribute.Risk.HIGH);
         document.DESIGN(DESIGN_LINK);
         assertThat(true, Matchers.is(setUpHomePage(webDriver)));
-        dataManager.applitoolsEyes.checkEyesWindow(webDriver,"HOMEPAGE");
+        dataManager.applitoolsEyes.checkEyesWindow("HOMEPAGE");
         document.THEN("I should see subcategory page loaded");
         document.EOT();
     }
