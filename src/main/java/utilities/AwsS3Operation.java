@@ -121,7 +121,6 @@ public class AwsS3Operation {
             inputStream = s3object.getObjectContent();
             FileUtils.copyInputStreamToFile(inputStream, new File("target/classes/testData/" + ConfigurationManager.brand.toLowerCase() + "/" + ConfigurationManager.env.toLowerCase() + "/" + "a.json"));
             productsDate = s3object.getObjectMetadata().getLastModified().toString();
-            //FileTime now = FileTime.from(s3object.getObjectMetadata().getLastModified().toInstant());
             Files.setAttribute(productPath, "lastModifiedTime", FileTime.from(s3object.getObjectMetadata().getLastModified().toInstant()));
         }else{
             System.out.println("Products.json S3 file is uptodate...");

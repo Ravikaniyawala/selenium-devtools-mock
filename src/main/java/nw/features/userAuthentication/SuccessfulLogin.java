@@ -36,6 +36,9 @@ public class SuccessfulLogin extends AbstractTest {
         dataManager.mockService.addMock("url","your json");
         //example of enabling network logs using devtools
         dataManager.mockService.enableNetworkLogs(webDriver);
+        dataManager.userModel.setBanner("abc");
+        dataManager.userModel.setEmail("abc@test.com");
+        dataManager.userModel.setPassword("test");
     }
 
     @Test(retryAnalyzer = RetryFailedTestCases.class,groups = { Attribute.SCENARIO_RISK_HIGH, Attribute.SCENARIO_STATUS_IMPLEMENTED, Attribute.AUTOMATION_IMPLEMENTED})
